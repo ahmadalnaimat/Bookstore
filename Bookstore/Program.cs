@@ -1,3 +1,6 @@
+using Bookstore.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Bookstore
 {
     public class Program
@@ -5,9 +8,14 @@ namespace Bookstore
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            string ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            builder.Services.AddDbContext<BookstoreContext>(options => options.UseSqlServer(ConnectionString));
+
 
             var app = builder.Build();
 
